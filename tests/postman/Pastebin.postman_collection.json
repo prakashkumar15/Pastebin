@@ -1,0 +1,199 @@
+{
+	"info": {
+		"_postman_id": "1b414a22-201f-4268-9ab1-47332b1bf181",
+		"name": "Pastebin",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "19853002"
+	},
+	"item": [
+		{
+			"name": "Deterministic",
+			"item": [
+				{
+					"name": "add note",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "x-test-now-ms",
+								"value": "100000",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"content\": \"Deterministic\",\r\n  \"ttl_seconds\": 60,\r\n  \"max_views\": 5\r\n}\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/api/pastes",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"pastes"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "fetch note-before expiry",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "x-test-now-ms",
+								"value": "9999999999999",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/api/pastes/6953451f935c96ff9ebf43c4",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"pastes",
+								"6953451f935c96ff9ebf43c4"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "fetch note-after expiry",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "x-test-now-ms",
+								"value": "9999999999999",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "http://localhost:3000/api/pastes/69534cc0935c96ff9ebf43c6",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"pastes",
+								"69534cc0935c96ff9ebf43c6"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "healthcheck",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:3000/api/healthz",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"api",
+						"healthz"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "noteupload",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n\"content\": \"test\",\r\n\"ttl_seconds\": 60,\r\n\"max_views\": 12\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:3000/api/pastes",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"api",
+						"pastes"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "note fetch",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:3000/api/pastes/695350c41f08227ce87989b0",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"api",
+						"pastes",
+						"695350c41f08227ce87989b0"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

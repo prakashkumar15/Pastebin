@@ -30,8 +30,6 @@ A modern paste-sharing web application built with **Next.js 16**, **React 19**, 
    MONGODB_URI=mongodb://localhost:27017/
    MONGODB_DB=pastebin
    SITE_URL=http://localhost:3000
-   NEXT_PUBLIC_SITE_URL=http://localhost:3000
-   NODE_ENV=development
    ```
 
 3. **Start MongoDB** (if using Docker):
@@ -252,8 +250,6 @@ src/
 MONGODB_URI          # MongoDB connection string (required)
 MONGODB_DB           # Database name (default: pastebin)
 SITE_URL             # Server-side site URL
-NEXT_PUBLIC_SITE_URL # Client-side site URL
-NODE_ENV             # development or production
 TEST_MODE            # 0 or 1 for testing
 ```
 
