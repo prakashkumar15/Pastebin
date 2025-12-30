@@ -1,14 +1,14 @@
 version: '3.8'
 services:
   mongodb:
-    image: mongo:latest # Use the official mongo image from Docker Hub
+    image: mongo:latest
     container_name: mongodb_container
     ports:
-      - "27017:27017" # Map host port 27017 to container port 27017
+      - "27017:27017"
     volumes:
-      - mongodb_data:/data/db # Persist data in a Docker volume
-    restart: unless-stopped # Ensure the container restarts automatically unless stopped explicitly
+      - mongodb_data:/data/db
+    restart: unless-stopped 
 
 volumes:
   mongodb_data:
-    driver: local # Define the volume
+    driver: local

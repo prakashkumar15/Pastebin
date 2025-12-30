@@ -36,7 +36,7 @@ export default function PastePage() {
     <>
       <Navbar title="Pastebin" />
       <main className="mx-auto max-w-3xl p-6">
-        <h1 className="text-xl font-semibold mb-4">Pasted Content</h1>
+        <h1 className="text-xl font-semibold mb-4">Paste Content</h1>
         <pre className="whitespace-pre-wrap wrap-break-word rounded-md bg-gray-100 p-4 font-mono text-sm">
           {paste.content}
         </pre>

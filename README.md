@@ -24,7 +24,9 @@ A modern paste-sharing web application built with **Next.js 16**, **React 19**, 
    cp .env.example .env
    ```
 
-   Update `.env` with your MongoDB connection:
+   Update `.env` with your MongoDB connection. You have two options:
+
+   **Option A: Local MongoDB (requires Docker)**
 
    ```env
    MONGODB_URI=mongodb://localhost:27017/
@@ -32,11 +34,23 @@ A modern paste-sharing web application built with **Next.js 16**, **React 19**, 
    SITE_URL=http://localhost:3000
    ```
 
-3. **Start MongoDB** (if using Docker):
+   **Option B: MongoDB Atlas (Cloud - No Docker Required)**
+
+   ```env
+   MONGODB_URI=mongodb+srv://<username>:<password>@<cluster>.mongodb.net/
+   MONGODB_DB=pastebin
+   SITE_URL=http://localhost:3000
+   ```
+
+   > Get your MongoDB Atlas connection string from [atlas.mongodb.com](https://www.mongodb.com/products/platform/atlas-database)
+
+3. **Start MongoDB** (if using Local Option A with Docker):
 
    ```bash
-   docker compose -f dev/docker.compose.yml up -d mongodb
+   docker compose -f docker/docker.compose.yml up -d mongodb
    ```
+
+   > Skip this step if using MongoDB Atlas (Option B)
 
 4. **Run the development server:**
    ```bash
@@ -250,7 +264,8 @@ src/
 MONGODB_URI          # MongoDB connection string (required)
 MONGODB_DB           # Database name (default: pastebin)
 SITE_URL             # Server-side site URL
-TEST_MODE            # 0 or 1 for testing
+TEST_MODE            # Set to 1 to enable deterministic time testing (default: 0)
+NODE_ENV             # Environment type (development, production)
 ```
 
 ---
@@ -260,6 +275,55 @@ TEST_MODE            # 0 or 1 for testing
 ```bash
 npm run dev       # Start dev server
 npm run build     # Build for production
+npm test          # Run test suite
 ```
+
+---
+
+## Testing
+
+The project includes integration tests for API endpoints using **Jest**. Tests verify:
+
+- **Health Check**: Verifies `/api/healthz` endpoint connectivity
+- **Paste Creation**: Tests POST `/api/pastes` with TTL and view limits
+- **Paste Retrieval**: Tests GET `/api/pastes/[id]` and view count decrement
+
+### Deterministic Time for Testing
+
+The application supports **deterministic expiry testing** through time control:
+
+**Setup: Enable TEST_MODE**
+
+First, enable test mode in your `.env` file:
+
+```env
+TEST_MODE=1
+```
+
+**When `TEST_MODE=1` is enabled:**
+
+- The request header `x-test-now-ms: <milliseconds since epoch>` overrides the system time
+- Only affects expiry logic, allowing precise control of TTL and view limit expiration
+- If the header is absent, the application falls back to real system time
+
+**Usage Example:**
+
+```bash
+curl -H "x-test-now-ms: 1735506421000" http://localhost:3000/api/pastes/{id}
+```
+
+**Implementation:**
+
+- The `getNow()` utility function (in [src/utils/time.ts](src/utils/time.ts)) handles time resolution
+- Environment variable `TEST_MODE` controls whether to check for the custom time header
+- This enables tests to verify expiration logic without waiting for actual time to pass
+
+### Running Tests
+
+```bash
+npm test
+```
+
+This will run all test suites located in the `tests/` directory and generate coverage reports in the `coverage/` folder.
 
 ---
